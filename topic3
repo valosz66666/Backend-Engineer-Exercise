@@ -1,0 +1,16 @@
+With the expansion of business, the number of website users is increasing.
+The original data table has grown to the point where it is very slow to read
+and write data. Please describe how you will handle this from the two aspects
+of reading and writing.
+
+讀取部分：
+使用index增加查詢速度
+如果資料變動率不高，紀錄某些熱門查詢條件，快取查詢結果
+查詢時預設增加多一些條件 增加查詢速度
+切割資料表 像是常用時間做查詢的話 每個月一個表 常用地區做查詢的話 某些地區的資料做為一個表
+減少輸出沒必要的欄位
+
+寫入部分：
+將寫入資料合併成一條指令，降低解析SQL指令的次數以及網路傳輸的io
+寫入資料使用Transaction，因為每筆資料的提交都會建立一個運行跟提交的紀錄，因此使用Transaction，只會有一個commit 效能會提升很多
+將寫入的資料排序，當資料量超過緩衝容量時，每次定位index涉及到許多讀寫操作，降低index定位需要調整的幅度，加快寫入速度
